@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roc.javaweb.mapper.UserMapper">
+    <insert id="inserUser">
+        insert into user values(#{uid}, #{username}, #{pwd}, "default", "default", "男", "default", "default", "http://oss.rocyan.com/javaweb/1582765239742.png")
+    </insert>
+</mapper>
