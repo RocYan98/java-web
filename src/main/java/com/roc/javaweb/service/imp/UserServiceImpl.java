@@ -2,7 +2,11 @@ package com.roc.javaweb.service.imp;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mysql.cj.util.StringUtils;
+import com.roc.javaweb.domain.Msg;
 import com.roc.javaweb.domain.User;
 import com.roc.javaweb.service.UserService;
 import com.roc.javaweb.mapper.UserMapper;
@@ -48,5 +52,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = new User();
         user.setHead(url);
         update(user, new LambdaUpdateWrapper<User>().eq(User::getUid, uid));
+    }
+
+    @Override
+    public IPage<User> getPage(int current, int size, String search) {
+        IPage<User> page = null;
+        if (!StringUtils.isNullOrEmpty(search)) {
+            page = page(new Page<User>(current, size).setDesc("time"), new LambdaQueryWrapper<User>().like(User::getUid, search).or().like(User::getCname, search).or().like(User::getEname, search));
+        } else page = page(new Page<User>(current, size).setDesc("time"));
+        return page;
     }
 }

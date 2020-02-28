@@ -1,5 +1,7 @@
 package com.roc.javaweb.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.roc.javaweb.domain.Msg;
 import com.roc.javaweb.domain.User;
 import com.roc.javaweb.service.UserService;
 import com.roc.javaweb.util.OSSClientUtil;
@@ -7,6 +9,9 @@ import com.roc.javaweb.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -55,5 +60,15 @@ public class UserController {
     public Result<User> updateDB(String url, String uid) {
         userService.updateHead(uid, url);
         return new Result<User>(0, "上传成功", userService.getByUid(uid));
+    }
+
+    @CrossOrigin
+    @GetMapping("/page")
+    public Result<Map> getPage(int current, int size, String search) {
+        IPage<User> page = userService.getPage(current, size, search);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("records", page.getRecords());
+        hashMap.put("total", page.getTotal());
+        return new Result<Map>(0, hashMap);
     }
 }

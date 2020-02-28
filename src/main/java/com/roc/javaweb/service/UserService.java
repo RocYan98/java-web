@@ -1,5 +1,6 @@
 package com.roc.javaweb.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.roc.javaweb.domain.User;
 
@@ -15,4 +16,6 @@ public interface UserService extends IService<User> {
     void register(User user);
 
     void updateHead(String uid, String url);
+
+    IPage<User> getPage(int current, int size, String search);
 }
