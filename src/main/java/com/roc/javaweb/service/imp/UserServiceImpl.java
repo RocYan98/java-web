@@ -58,8 +58,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public IPage<User> getPage(int current, int size, String search) {
         IPage<User> page = null;
         if (!StringUtils.isNullOrEmpty(search)) {
-            page = page(new Page<User>(current, size).setDesc("time"), new LambdaQueryWrapper<User>().like(User::getUid, search).or().like(User::getCname, search).or().like(User::getEname, search));
-        } else page = page(new Page<User>(current, size).setDesc("time"));
+            page = page(new Page<User>(current, size).setAsc("uid"), new LambdaQueryWrapper<User>().like(User::getUid, search).or().like(User::getCname, search).or().like(User::getEname, search));
+        } else page = page(new Page<User>(current, size).setAsc("uid"));
         return page;
     }
 }

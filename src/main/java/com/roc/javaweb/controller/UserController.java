@@ -1,5 +1,6 @@
 package com.roc.javaweb.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.roc.javaweb.domain.Msg;
 import com.roc.javaweb.domain.User;
@@ -10,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -59,16 +60,31 @@ public class UserController {
     @GetMapping("/updateDB")
     public Result<User> updateDB(String url, String uid) {
         userService.updateHead(uid, url);
-        return new Result<User>(0, "上传成功", userService.getByUid(uid));
+        return new Result<>(0, "上传成功", userService.getByUid(uid));
     }
 
     @CrossOrigin
     @GetMapping("/page")
-    public Result<Map> getPage(int current, int size, String search) {
+    public Result<HashMap<String, Object>> getPage(int current, int size, String search) {
         IPage<User> page = userService.getPage(current, size, search);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("records", page.getRecords());
         hashMap.put("total", page.getTotal());
-        return new Result<Map>(0, hashMap);
+        return new Result<>(0, hashMap);
     }
+
+    @CrossOrigin
+    @PostMapping("/deleteOne")
+    public Result<User> deleteOne(@RequestBody User user) {
+        userService.remove(new LambdaQueryWrapper<User>().eq(User::getUid, user.getUid()));
+        return new Result<User>(0, "删除成功");
+    }
+
+    @CrossOrigin
+    @PostMapping("deleteSelected")
+    public Result deleteSelected(@RequestBody String[] idList) {
+        Arrays.stream(idList).forEach(id -> userService.remove(new LambdaQueryWrapper<User>().eq(User::getUid, id)));
+        return new Result<Msg>(0, "删除成功");
+    }
+
 }
