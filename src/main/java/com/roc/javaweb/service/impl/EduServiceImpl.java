@@ -1,4 +1,4 @@
-package com.roc.javaweb.service.imp;
+package com.roc.javaweb.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mysql.cj.util.StringUtils;
 import com.roc.javaweb.domain.Edu;
-import com.roc.javaweb.domain.Msg;
 import com.roc.javaweb.mapper.EduMapper;
 import com.roc.javaweb.service.EduService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,6 @@ import java.util.List;
 
 @Service
 public class EduServiceImpl extends ServiceImpl<EduMapper, Edu> implements EduService {
-
-    @Autowired
-    private EduMapper eduMapper;
 
     @Override
     public List<Edu> getByUid(String uid) {
