@@ -2,12 +2,13 @@ package com.roc.javaweb.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.roc.javaweb.domain.Attractions;
 import com.roc.javaweb.domain.Food;
 import com.roc.javaweb.service.FoodService;
+import com.roc.javaweb.util.OSSClientUtil;
 import com.roc.javaweb.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,6 +21,9 @@ public class FoodController {
 
     @Autowired
     private FoodService foodService;
+
+    @Autowired
+    private OSSClientUtil ossClientUtil;
 
     @CrossOrigin
     @GetMapping("/page")
@@ -42,15 +46,43 @@ public class FoodController {
 
     @CrossOrigin
     @PostMapping("/update")
-    public Result update(@RequestBody Food food) {
-        foodService.updateById(food);
-        return new Result<Attractions>(0, "修改成功");
+    public Result update(MultipartFile file, int fid, String uid, String title, String text) {
+        Food food = new Food();
+        food.setFid(fid);
+        food.setUid(uid);
+        food.setText(text);
+        food.setTitle(title);
+        if (file != null) {
+            String fileName = ossClientUtil.uploadImg2Oss(file);
+            if (fileName.equals("上传失败")) return new Result<Food>(-1, "上传失败");
+            food.setPic("http://oss.rocyan.com/javaweb/" + fileName);
+        }
+
+        try {
+            foodService.updateById(food);
+        } catch (Exception e) {
+            return new Result<Food>(-1, "没有此学号，更新失败");
+        }
+
+        return new Result<Food>(0, "修改成功");
     }
 
     @CrossOrigin
     @PostMapping("/add")
-    public Result<Food> add(@RequestBody Food food) {
-        food.setPic("http://oss.rocyan.com/javaweb/1582902816521.png");
+    public Result<Food> add(MultipartFile file, int fid, String uid, String title, String text) {
+        Food food = new Food();
+        food.setFid(fid);
+        food.setUid(uid);
+        food.setText(text);
+        food.setTitle(title);
+        if (file != null) {
+            String fileName = ossClientUtil.uploadImg2Oss(file);
+            if (fileName.equals("上传失败")) return new Result<Food>(-1, "上传失败");
+            food.setPic("http://oss.rocyan.com/javaweb/" + fileName);
+        } else {
+            food.setPic("http://oss.rocyan.com/javaweb/1582902816521.png");
+        }
+
         try {
             foodService.save(food);
         } catch (Exception e) {

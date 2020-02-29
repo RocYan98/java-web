@@ -48,19 +48,13 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping("/updateHead")
-    public Result<String> updateHead(MultipartFile file) {
+    public Result<User> updateHead(MultipartFile file, String uid) {
         String fileName = ossClientUtil.uploadImg2Oss(file);
-        if (fileName.equals("上传失败")) return new Result<>(-1, "上传失败", "上传失败");
+        if (fileName.equals("上传失败")) return new Result<User>(-1, "上传失败");
 
         String url = "http://oss.rocyan.com/javaweb/" + fileName;
-        return new Result<>(0, "上传成功", url);
-    }
-
-    @CrossOrigin
-    @GetMapping("/updateDB")
-    public Result<User> updateDB(String url, String uid) {
         userService.updateHead(uid, url);
-        return new Result<>(0, "上传成功", userService.getByUid(uid));
+        return new Result<User>(0, "上传成功", userService.getByUid(uid));
     }
 
     @CrossOrigin

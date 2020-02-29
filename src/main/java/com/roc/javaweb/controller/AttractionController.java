@@ -3,10 +3,13 @@ package com.roc.javaweb.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.roc.javaweb.domain.Attractions;
+import com.roc.javaweb.domain.Food;
 import com.roc.javaweb.service.AttractionService;
+import com.roc.javaweb.util.OSSClientUtil;
 import com.roc.javaweb.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,6 +22,9 @@ public class AttractionController {
 
     @Autowired
     private AttractionService attractionService;
+
+    @Autowired
+    private OSSClientUtil ossClientUtil;
 
     @CrossOrigin
     @GetMapping("/page")
@@ -41,15 +47,43 @@ public class AttractionController {
 
     @CrossOrigin
     @PostMapping("/update")
-    public Result update(@RequestBody Attractions attractions) {
-        attractionService.updateById(attractions);
-        return new Result<Attractions>(0, "修改成功");
+    public Result update(MultipartFile file, int aid, String uid, String title, String text) {
+        Attractions attractions = new Attractions();
+        attractions.setAid(aid);
+        attractions.setUid(uid);
+        attractions.setText(text);
+        attractions.setTitle(title);
+        if (file != null) {
+            String fileName = ossClientUtil.uploadImg2Oss(file);
+            if (fileName.equals("上传失败")) return new Result<Attractions>(-1, "上传失败");
+            attractions.setPic("http://oss.rocyan.com/javaweb/" + fileName);
+        }
+
+        try {
+            attractionService.updateById(attractions);
+        } catch (Exception e) {
+            return new Result<Food>(-1, "没有此学号，更新失败");
+        }
+
+        return new Result<Food>(0, "修改成功");
     }
 
     @CrossOrigin
     @PostMapping("/add")
-    public Result<Attractions> add(@RequestBody Attractions attractions) {
-        attractions.setPic("http://oss.rocyan.com/javaweb/1582902816521.png");
+    public Result<Attractions> add(MultipartFile file, int aid, String uid, String title, String text) {
+        Attractions attractions = new Attractions();
+        attractions.setAid(aid);
+        attractions.setUid(uid);
+        attractions.setText(text);
+        attractions.setTitle(title);
+        if (file != null) {
+            String fileName = ossClientUtil.uploadImg2Oss(file);
+            if (fileName.equals("上传失败")) return new Result<Attractions>(-1, "上传失败");
+            attractions.setPic("http://oss.rocyan.com/javaweb/" + fileName);
+        } else {
+            attractions.setPic("http://oss.rocyan.com/javaweb/1582902816521.png");
+        }
+
         try {
             attractionService.save(attractions);
         } catch (Exception e) {
