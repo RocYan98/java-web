@@ -22,9 +22,9 @@ public class OSSClientUtil {
     protected static final Logger log = LoggerFactory.getLogger(OSSClientUtil.class);
 
     private String endpoint = "oss-cn-hangzhou.aliyuncs.com";
-    private String accessKeyId = "LTAI4FggSYZtDmfn6uqFhuta";
-    private String accessKeySecret = "KYYSQGKm1AaHp8MtKlQ02OWyAFOmsd";
-    private String bucketName = "rocyan";
+    private String accessKeyId = "your accessKeyId";
+    private String accessKeySecret = "your accessKeySecret";
+    private String bucketName = "your bucketName";
 
     //文件存储目录
     private String filedir = "javaweb/";
