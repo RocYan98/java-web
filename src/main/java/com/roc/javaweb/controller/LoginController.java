@@ -5,6 +5,7 @@ import com.roc.javaweb.service.EduService;
 import com.roc.javaweb.util.Result;
 import com.roc.javaweb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -41,6 +42,7 @@ public class LoginController {
 
     @CrossOrigin
     @PostMapping("/register")
+    @Transactional
     public Result<User> register(@RequestBody User user) {
         if (userService.getByUid(user.getUid()) != null) {
             return new Result<User>(-1, "学号已注册");
