@@ -27,5 +27,7 @@ target/
 /.nb-gradle/
 build/
 
-### VS Code ###
-.vscode/
+.mvn/
+mvnw
+mvnw.cmmd
+.DS_Store
