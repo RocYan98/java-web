@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Attractions implements Serializable {
     @TableId
-    private int aid;
+    private Integer aid;
     private String uid;
     private String title;
     private String text;
@@ -23,21 +23,20 @@ public class Attractions implements Serializable {
                 '}';
     }
 
+    public Integer getAid() {
+        return aid;
+    }
+
+    public void setAid(Integer aid) {
+        this.aid = aid;
+    }
+
     public String getUid() {
         return uid;
     }
 
     public void setUid(String uid) {
         this.uid = uid;
-    }
-
-
-    public int getAid() {
-        return aid;
-    }
-
-    public void setAid(int aid) {
-        this.aid = aid;
     }
 
     public String getTitle() {

@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Edu implements Serializable {
     @TableId
-    private int eid;
+    private Integer eid;
     private String uid;
     private String title;
     private String name;
@@ -23,7 +23,7 @@ public class Edu implements Serializable {
 
     private String web;
 
-    public int getEid() {
+    public Integer getEid() {
         return eid;
     }
 

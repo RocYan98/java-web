@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Food implements Serializable {
     @TableId
-    private int fid;
+    private Integer fid;
     private String uid;
     private String title;
     private String text;
@@ -23,7 +23,7 @@ public class Food implements Serializable {
                 '}';
     }
 
-    public int getFid() {
+    public Integer getFid() {
         return fid;
     }
 

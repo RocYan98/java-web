@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Cele implements Serializable {
 
     @TableId
-    private int cid;
+    private Integer cid;
     private String uid;
     private String title;
     private String text;
@@ -24,7 +24,7 @@ public class Cele implements Serializable {
                 '}';
     }
 
-    public int getCid() {
+    public Integer getCid() {
         return cid;
     }
 

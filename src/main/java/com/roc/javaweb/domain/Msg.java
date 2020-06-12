@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Msg implements Serializable {
     @TableId
-    private int mid;
+    private Integer mid;
     private String name;
     private String msg;
     private String time;
@@ -29,7 +29,7 @@ public class Msg implements Serializable {
         this.msg = msg;
     }
 
-    public int getMid() {
+    public Integer getMid() {
         return mid;
     }
 
